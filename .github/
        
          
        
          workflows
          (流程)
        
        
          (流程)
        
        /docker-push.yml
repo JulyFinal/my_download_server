@@ -3,10 +3,8 @@ on:
   push:
     branches: [ main ]
 env:
-  # 设置 docker 镜像名
   IMAGE_NAME: my_download_server
   VERSION: latest
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   push:
     runs-on: ubuntu-latest
@@ -23,4 +21,4 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $image_name:$tag
+          docker push finalnarcissus/$IMAGE_NAME:$VERSION
