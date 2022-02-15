@@ -1,0 +1,26 @@
+name: AutoBuild
+on:
+  push:
+    branches: [ main ]
+env:
+  # 设置 docker 镜像名
+  IMAGE_NAME: my_download_server
+  VERSION: latest
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Build
+        run: docker build ./Docker/ --file Dockerfile --tag $image_name
+      - name:
+        run: echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u libra146 --password-stdin
+      - name: Push Docker image
+        run: |
+          IMAGE_ID=finalnarcissus/$IMAGE_NAME
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $image_name:$tag
