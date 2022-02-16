@@ -1,17 +1,23 @@
 name: AutoBuild
 on:
   push:
-    branches: [ master ]
+    branches: 
+      - master
 env:
   REGISTRY: docker.io
   DOCKER_HUB_USER: finalnarcissus
-  IMAGE_NAME: my_download_server
+  IMAGE_NAME: ${{ github.event.repository.name }}
   VERSION: latest
 jobs:
-  push:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: Log into registry docker.io
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
