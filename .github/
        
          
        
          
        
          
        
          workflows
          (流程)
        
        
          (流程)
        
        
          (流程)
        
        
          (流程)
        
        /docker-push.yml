@@ -9,10 +9,9 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Build
-        run: docker build ./Docker/ --file Dockerfile --tag $IMAGE_NAME:$VERSION
+        run: docker build -f ./Docker/Dockerfile -t $IMAGE_NAME:$VERSION
       - name: Login DockerHub
         run: echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u libra146 --password-stdin
       - name: Push Docker image
