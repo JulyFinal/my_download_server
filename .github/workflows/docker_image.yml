@@ -3,22 +3,30 @@ on:
   push:
     branches: [ master ]
 env:
+  REGISTRY: docker.io
+  DOCKER_HUB_USER: finalnarcissus
   IMAGE_NAME: my_download_server
   VERSION: latest
 jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        run: docker build . -f Dockerfile -t $IMAGE_NAME:$VERSION
+      - name: Get Time
+        id: time
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 8
+          format: 'YYYY-MM-DD-HH-mm-ss'
       - name: Log into registry docker.io
         uses: docker/login-action@v1
         with:
-          registry: docker.io
-          username: finalnarcissus
+          registry: ${{ env.REGISTRY }}
+          username: $DOCKER_HUB_USER
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-      - name: Push Docker image
-        run: |
-          IMAGE_ID=finalnarcissus/$IMAGE_NAME
-          docker push finalnarcissus/$IMAGE_NAME:$VERSION
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}-${{ steps.time.outputs.time }}
+          labels: ${{ steps.meta.outputs.labels }}
