@@ -12,13 +12,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Build
-        run: docker build ./Docker/ --file Dockerfile --tag $IMAGE_NAME
+        run: docker build ./Docker/ --file Dockerfile --tag $IMAGE_NAME:$VERSION
       - name: Login DockerHub
         run: echo "${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" | docker login -u libra146 --password-stdin
       - name: Push Docker image
         run: |
           IMAGE_ID=finalnarcissus/$IMAGE_NAME
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push finalnarcissus/$IMAGE_NAME:$VERSION
