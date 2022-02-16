@@ -1,7 +1,7 @@
 name: AutoBuild
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 env:
   IMAGE_NAME: my_download_server
   VERSION: latest
