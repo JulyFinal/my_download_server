@@ -1,9 +1,9 @@
 FROM python:3.9-alpine as base
-COPY requirements.txt /requirements.txt
+COPY ./Docker/requirements.txt /requirements.txt
 RUN pip install --user -r /requirements.txt
 
 FROM base
-COPY main.py /run/main.py
+COPY ./Docker/main.py /run/main.py
 ENV qb_host="http://192.168.100.1" \
     qb_port=8080 \
     qb_account=admin \
