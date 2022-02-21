@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import time
-
+import pytz
 import aria2p
 import pymongo
 import qbittorrentapi
@@ -75,7 +75,7 @@ def mongodb_check():
         print(e)
 
 
-@scheduler.scheduled_job('interval', hours=1, timezone="UTC")
+@scheduler.scheduled_job('interval', hours=1, timezone=pytz.utc)
 def job():
     mongodb_check()
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
